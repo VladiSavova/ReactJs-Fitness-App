@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import {Route, Switch, Redirect, withRouter} from 'react-router-dom'
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Home from './components/Home/Home';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Register from './components/Register/Register';
-import toast from 'react-toastify';
 import Login from './components/Login/Login';
+import Create from './components/Create/Create';
+import AllPosts from './components/AllPosts/AllPosts';
+import Details from './components/Details/Details';
 
 
 
@@ -14,16 +20,40 @@ class App extends Component {
     super(props)
     this.state={
       username: '',
-      isAdmin: false
+      isAdmin: false,
+      isAuthed: false,
+      posts: [],
     }
   };
+  
+  componentWillMount() {
+    const isAdmin = localStorage.getItem('isAdmin') === "true"
+    const isAuthed = !!localStorage.getItem('username');
+
+    if (localStorage.getItem('username')) {
+      this.setState({
+    //    userId: localStorage.getItem('userId'),
+        username: localStorage.getItem('username'),
+        isAdmin,
+        isAuthed
+      })
+    }
+
+  //  this.getPosts()
+
+  }
+  
+  componentDidMount(){
+    this.getPosts()
+  }
+  
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
       
     })
-
   }
+  
   handleSubmit(e, data, isSignUp) {
     e.preventDefault()
     //console.log(data);
@@ -42,48 +72,156 @@ class App extends Component {
         if (body.username) {
           this.setState({
             username: body.username,
-         //   isAdmin : body.isAdmin
-          })
+            isAdmin : body.isAdmin,
+            isAuthed: !!body.username
+          });
+     //     toast.success('Welcome, ' + body.username);
           localStorage.setItem('username',body.username )
-        //  localStorage.setItem('isAdmin',body.isAdmin )
-     //     toast.success('Welcome' + body.username);  
+          localStorage.setItem('isAdmin',body.isAdmin )
+          localStorage.setItem('isAuthed', !!body.username)
+          toast.success(`Welcome, ${body.username}`, {closeButton: false});  
              this.props.history.push('/');
+         //   console.log(this.props);
         }
         else{
-          // toast.error(body.message);
+           toast.error(body.message, {closeButton: false});
         }      
       }
       )
     .catch(error => console.error(error));
 
     console.log(localStorage);
-    
-  }
+ }
+ 
+ handleCreateSubmit(e, data) {
+   console.log(data);
+   
+  e.preventDefault();
+
+  fetch('http://localhost:9999/feed/post/create', {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+    .then(
+      rawData => rawData.json()
+    )
+    .then(
+
+      body => {
+        console.log(body);
+        
+        if (!body.errors) {
+          toast.success(body.message);
+          this.props.history.push('/');
+          this.getPosts()
+        }
+        else {
+          toast.error(body.message);
+        }
+      }
+    )
+    .catch(error => console.error(error));
+
+}
+  
+  getPosts() {
+    fetch('http://localhost:9999/feed/posts')
+      .then(rawData => rawData.json())
+      .then(
+        body => {
+          this.setState({
+            posts: body.posts
+          })
+        }
+      )
+      .catch(error => console.error(error));
+    }
+    logout() {
+
+      this.setState({
+        username: null,
+        isAdmin: false,
+        isAuthed: false,
+      })
+      localStorage.clear();
+      toast.success("You have been successfully logged out!")
+    }
+   
+    Details() {
+      fetch('http://localhost:9999/feed//all/details')
+        .then(rawData => rawData.json())
+        .then(
+          body => {
+            this.setState({
+              posts: body.posts
+            })
+            // if (!body.errors) {
+            //   toast.success(body.message);  
+            // }
+            // else{
+            //   toast.error(body.message);
+            // }      
+          }
+        )
+        .catch(error => console.error(error));
+      }
+  
+  
   render() {
     return (
       <div className="App">
-        
-
-        <Header/>
+      <ToastContainer/>
+        <Header isAdmin={this.state.isAdmin} isAuthed={this.state.isAuthed} logout={this.logout.bind(this)}/>
         <Switch>
         <Route path="/" exact component={Home}/>
         <Route path="/register" render={(props)=>
         <Register
          {...props}
           handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit.bind(this)}/>} 
+          handleSubmit={this.handleSubmit.bind(this)}
+          history={this.props.history}/>} 
           />
-         <Route path="/login" render={(props)=>
-        <Login
-         {...props}
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit.bind(this)}/>} 
-          />
+         <Route path="/login" render={(props) =>
+            this.state.isAuthed ?
+              <Redirect to="/" />
+              :
+              <Login
+                handleSubmit={this.handleSubmit.bind(this)}
+                handleChange={this.handleChange}
+                history={this.props.history}
+                {...props} />} />
+         
+          <Route path="/logout" render={(props) => {
+
+          return (<Redirect to="/" />)
+          }} />;
+
+          <PrivateRoute path="/create"
+            isAdmin={this.state.isAdmin} render={(props) =>
+              <Create handleSubmit={this.handleCreateSubmit.bind(this)}
+                handleChange={this.handleChange}
+                history={this.props.history}
+                {...props} />} />
+
+
+              <Route exact path="/all" render={(props) =>
+            <AllPosts
+              posts={this.state.posts}
+              {...props} />} />
+
+         <Route exact path="/posts/:id" render={(props) =>
+            <Details
+              posts={this.state.posts}
+              {...props} />} />
+
+              />
         </Switch>
         <Footer/>
         </div>
+       
     );
   }
 }
 
-export default App;
+export default withRouter(App);
