@@ -12,6 +12,8 @@ import Login from './components/Login/Login';
 import Create from './components/Create/Create';
 import AllPosts from './components/AllPosts/AllPosts';
 import Details from './components/Details/Details';
+import Edit from './components/Edit/Edit';
+
 
 
 
@@ -215,7 +217,14 @@ class App extends Component {
               posts={this.state.posts}
               {...props} />} />
 
-              />
+         <PrivateRoute exact path="/edit/:id"
+            isAdmin={this.state.isAdmin} render={(props) =>
+              <Edit
+                getPosts={this.getPosts.bind(this)}
+                handleChange={this.handleChange}
+                history={this.props.history}
+                {...props} />} />
+
         </Switch>
         <Footer/>
         </div>

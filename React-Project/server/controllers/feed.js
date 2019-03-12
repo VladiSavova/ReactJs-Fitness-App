@@ -31,5 +31,81 @@ module.exports = {
       }
       next(error);
     });
-  }
+  },
+  editGet: (req, res, next) => {
+    const id = req.params.id
+    Post.findById(id)
+      .then((post) => {
+        res
+          .status(200)
+          .json({ message: 'Fetched post successfully.', post });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
+  },
+
+  editPost: (req, res) => {
+    const id = req.params.id;
+    const { title, imageUrl, content } = req.body;
+
+    Post.findById(id)
+      .then((post) => {
+        post.title = title;
+        post.content = content;
+        post.imageUrl = imageUrl;
+
+        return post.save().then(() => {
+          res.status(200)
+            .json({
+              message: "Post edited!",
+              post
+            })
+        })
+      })
+
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+      });
+  },
+
+  deleteGet: (req, res, next) => {
+    const id = req.params.id
+    Post.findById(id)
+      .then((post) => {
+        res
+          .status(200)
+          .json({ message: 'Fetched post successfully.', post })
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
+  },
+
+  deletePost: (req, res) => {
+    const id = req.params.id;
+    Post.findByIdAndDelete(id)
+      .then(
+        res.status(200)
+          .json({
+            message: "Post deleted!",
+            id
+          })
+      )
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+      });
+  },
 }
