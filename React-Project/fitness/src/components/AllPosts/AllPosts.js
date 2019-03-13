@@ -11,11 +11,11 @@ class AllPosts extends Component {
           <h1>All Posts</h1>
           <div className="dline" />
         </div>
+        
         {console.log(this.props.posts)}
         {this.props.posts.map(post =>
         <div id="ourserv">
-       
-        
+
             <h1 >{post.title}</h1>
             <a href="">
             <img src={post.imageUrl} alt width={287} height={192} /></a>

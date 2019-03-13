@@ -155,24 +155,6 @@ class App extends Component {
       toast.success("You have been successfully logged out!")
     }
    
-  // Details() {
-  //    fetch('http://localhost:9999/feed//all/details')
-  //      .then(rawData => rawData.json())
-  //      .then(
-  //        body => {
-  //          this.setState({
-  //            posts: body.posts
-  //          })
-            // if (!body.errors) {
-            //   toast.success(body.message);  
-            // }
-            // else{
-            //   toast.error(body.message);
-            // }      
-  //        }
-  //      )
- //       .catch(error => console.error(error));
- //     }
   
   
   render() {

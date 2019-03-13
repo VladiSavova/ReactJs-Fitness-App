@@ -69,12 +69,13 @@ class Delete extends Component {
 
         return (
             
-                <div className="Delete">
-                <h1>Delete</h1>
-             <form onSubmit={(e) => this.deletePost(e, this.state)}>
+          <div className="Delete">
+          <h1>want to delete?</h1>
+       <form onSubmit={(e) => this.deletePost(e, this.state)}>
 
-                  <input type="submit" value="Delete" /></form>
-              </div>
+            <input type="submit" value="yes" /></form>
+        </div>
+
         );
     }
 }

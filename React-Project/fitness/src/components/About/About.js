@@ -1,25 +1,27 @@
 import React from 'react'
 
 
-const About =(props) =>{
-  
+const About  = () =>{
     return(
+   
+        
+        <section>
+        <div id="contactpost">
+        <h1>About us</h1>
+        <h1><img src="images/banner.jpg" width={600} height={200} /></h1>
+        <h1>&nbsp;</h1>
       
-             
-                  
-                
-                  
-                  <div className="pic">
-                  <h2>About us</h2>
-    <img src="images/Slide11.jpg" alt="lala"/>
-    <p>This is our little blog for fitness fans and people who are just interest in fitness.</p>
-       </div>
-                
-               
-             
-              
-          
-  
-    );
-};
-export default About;
+       <h1>#TRAIN #EAT #SLEEP #REPEAT</h1>
+       <br></br>
+       <h1>Тhis is little fitness blog.</h1>
+       <h1>Here you can read all about diets, workouts and fitness industry.</h1>
+        
+        </div>
+         </section>
+
+     
+   
+    )
+   }
+   
+   export default About;
