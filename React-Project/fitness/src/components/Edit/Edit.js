@@ -70,17 +70,18 @@ class Edit extends Component {
   }
   render() {
     return (
-        <div className="Edit">
+      <div className="Create">
         <h1>Edit Post</h1>
-        <form  onSubmit={(e) => this.editPost(e, this.state)}>
+     <form onSubmit={(e) => this.editPost(e, this.state)}>
           <label htmlFor="title">Title</label>
-          <input type="text"  onChange={this.handleChange} id="title"  name="title" value={this.state.title}  placeholder="Title" />
-          <label htmlFor="ImageUrl">Image</label>
-          <input type="text"   onChange={this.handleChange}  id="imageUrl"  name="imageUrl" value={this.state.imageUrl} placeholder="imageUrl" />
+          <input type="text"  onChange={this.handleChange} id="title"  name="title" value={this.state.title} />
+          <label htmlFor="ImageUrl">ImageUrl</label>
+          <input type="text"   onChange={this.handleChange}  id="imageUrl"  name="imageUrl"  value={this.state.imageUrl} />
           <label htmlFor="content">Content</label>
-          <input type="text" onChange={this.handleChange}  id="content" name="content" value={this.state.content}  placeholder="Text" />
+          <textarea type="textarea" onChange={this.handleChange}  id="content" name="content"  value={this.state.content} />
           <input type="submit" value="Edit" /></form>
       </div>
+      
     );
   }
 }

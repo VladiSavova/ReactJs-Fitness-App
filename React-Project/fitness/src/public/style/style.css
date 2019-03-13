@@ -635,3 +635,9 @@ login {
   color: dodgerblue;
   background: transparent;
 }
+textarea {
+	resize: vertical;
+	width: 100%;
+	min-height: 300px;
+}
+

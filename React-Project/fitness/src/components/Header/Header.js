@@ -15,7 +15,7 @@ return(
           <ul>
             <li><NavLink to="/" id="homenav">Home</NavLink></li>
            
-           
+            <li>{ <NavLink to="/about" id="blognav">About</NavLink>}</li>
             <li>{isAdmin && <NavLink to="/create" id="blognav">Create</NavLink>}</li>
             <li>{isAuthed &&<NavLink to="/all">All Posts</NavLink>}</li>
             <li>{!isAuthed && <NavLink to="/login" id="blognav">Login</NavLink>}</li>

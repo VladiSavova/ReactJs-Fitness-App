@@ -21,7 +21,7 @@ class Create extends Component {
           <label htmlFor="ImageUrl">Image</label>
           <input type="text"   onChange={this.handleChange}  id="imageUrl"  name="imageUrl"  placeholder="imageUrl" />
           <label htmlFor="content">Content</label>
-          <input type="text" onChange={this.handleChange}  id="content" name="content"   placeholder="Text" />
+          <textarea type="textarea" onChange={this.handleChange}  id="content" name="content"   placeholder="Text" />
           <input type="submit" value="Create" /></form>
       </div>
     );

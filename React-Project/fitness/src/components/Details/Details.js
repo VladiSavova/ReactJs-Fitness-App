@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom'
 
 class Details extends Component {
+  
     constructor(props) {
         super(props);
         this.state = {
           post: null
+        
         };
-      }
+        
+    }
       
     componentDidMount() {
       const { posts, match } = this.props;
@@ -41,7 +44,7 @@ class Details extends Component {
       return (
         <div> 
                <NavLink to={"/edit/" + this.props.match.params.id}>edit post </NavLink>
-            
+               <NavLink to={"/delete/" + this.props.match.params.id}>delete post </NavLink>
               <h1>{this.state.post.title}</h1>
               <p>{this.state.post.content}</p>
         </div>

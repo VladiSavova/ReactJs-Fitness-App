@@ -13,6 +13,8 @@ import Create from './components/Create/Create';
 import AllPosts from './components/AllPosts/AllPosts';
 import Details from './components/Details/Details';
 import Edit from './components/Edit/Edit';
+import Delete  from './components/Delete/Delete';
+import About from './components/About/About';
 
 
 
@@ -28,26 +30,29 @@ class App extends Component {
     }
   };
   
-  componentWillMount() {
+  componentDidMount() {
     const isAdmin = localStorage.getItem('isAdmin') === "true"
     const isAuthed = !!localStorage.getItem('username');
 
-    if (localStorage.getItem('username')) {
+    if (isAuthed) {
       this.setState({
-    //    userId: localStorage.getItem('userId'),
+        userId: localStorage.getItem('userId'),
         username: localStorage.getItem('username'),
         isAdmin,
-        isAuthed
+        isAuthed,
       })
     }
+    this.getPosts();
 
-  //  this.getPosts()
 
   }
-  
-  componentDidMount(){
-    this.getPosts()
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState == this.state) {
+      this.getPosts();
+    }
   }
+
   
   handleChange(e) {
     this.setState({
@@ -150,24 +155,24 @@ class App extends Component {
       toast.success("You have been successfully logged out!")
     }
    
-    Details() {
-      fetch('http://localhost:9999/feed//all/details')
-        .then(rawData => rawData.json())
-        .then(
-          body => {
-            this.setState({
-              posts: body.posts
-            })
+  // Details() {
+  //    fetch('http://localhost:9999/feed//all/details')
+  //      .then(rawData => rawData.json())
+  //      .then(
+  //        body => {
+  //          this.setState({
+  //            posts: body.posts
+  //          })
             // if (!body.errors) {
             //   toast.success(body.message);  
             // }
             // else{
             //   toast.error(body.message);
             // }      
-          }
-        )
-        .catch(error => console.error(error));
-      }
+  //        }
+  //      )
+ //       .catch(error => console.error(error));
+ //     }
   
   
   render() {
@@ -217,14 +222,24 @@ class App extends Component {
               posts={this.state.posts}
               {...props} />} />
 
-         <PrivateRoute exact path="/edit/:id"
+        <PrivateRoute exact path="/edit/:id"
             isAdmin={this.state.isAdmin} render={(props) =>
               <Edit
                 getPosts={this.getPosts.bind(this)}
                 handleChange={this.handleChange}
                 history={this.props.history}
                 {...props} />} />
+         
+         <PrivateRoute exact path="/delete/:id"
+            isAdmin={this.state.isAdmin} render={(props) =>
+              <Delete
+                handleChange={this.handleChange}
+                history={this.props.history}
+                {...props} />} />
 
+           <Route path="/about" render={(props) => (
+            <About />
+          )} />       
         </Switch>
         <Footer/>
         </div>
