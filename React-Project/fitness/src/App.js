@@ -204,21 +204,21 @@ class App extends Component {
               posts={this.state.posts}
               {...props} />} />
 
-        <PrivateRoute exact path="/edit/:id"
+<PrivateRoute  path="/edit/:id"
             isAdmin={this.state.isAdmin} render={(props) =>
               <Edit
+                isAdmin={this.state.isAdmin}
                 getPosts={this.getPosts.bind(this)}
                 handleChange={this.handleChange}
                 history={this.props.history}
                 {...props} />} />
-         
-         <PrivateRoute exact path="/delete/:id"
+
+          <PrivateRoute path="/delete/:id"
             isAdmin={this.state.isAdmin} render={(props) =>
               <Delete
                 handleChange={this.handleChange}
                 history={this.props.history}
                 {...props} />} />
-
            <Route path="/about" render={(props) => (
             <About />
           )} />       
