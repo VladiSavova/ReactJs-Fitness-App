@@ -16,9 +16,6 @@ import Edit from './components/Edit/Edit';
 import Delete  from './components/Delete/Delete';
 import About from './components/About/About';
 
-
-
-
 class App extends Component {
   constructor(props){
     super(props)
@@ -82,7 +79,7 @@ class App extends Component {
             isAdmin : body.isAdmin,
             isAuthed: !!body.username
           });
-     //     toast.success('Welcome, ' + body.username);
+    
           localStorage.setItem('username',body.username )
           localStorage.setItem('isAdmin',body.isAdmin )
           localStorage.setItem('isAuthed', !!body.username)
@@ -154,9 +151,7 @@ class App extends Component {
       localStorage.clear();
       toast.success("You have been successfully logged out!")
     }
-   
-  
-  
+
   render() {
     return (
       <div className="App">
@@ -164,6 +159,7 @@ class App extends Component {
         <Header isAdmin={this.state.isAdmin} isAuthed={this.state.isAuthed} logout={this.logout.bind(this)}/>
         <Switch>
         <Route path="/" exact component={Home}/>
+        
         <Route path="/register" render={(props)=>
         <Register
          {...props}
@@ -201,6 +197,7 @@ class App extends Component {
 
          <Route exact path="/posts/:id" render={(props) =>
             <Details
+              isAdmin={this.state.isAdmin}
               posts={this.state.posts}
               {...props} />} />
 
@@ -216,11 +213,14 @@ class App extends Component {
           <PrivateRoute path="/delete/:id"
             isAdmin={this.state.isAdmin} render={(props) =>
               <Delete
+                isAdmin={this.state.isAdmin}
                 handleChange={this.handleChange}
                 history={this.props.history}
                 {...props} />} />
+
            <Route path="/about" render={(props) => (
             <About />
+           
           )} />       
         </Switch>
         <Footer/>

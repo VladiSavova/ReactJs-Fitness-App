@@ -37,14 +37,15 @@ class Details extends Component {
     }
     
     render() {
+      console.log(this.props.isAdmin)
       if (!this.state.post){
         return <span>Loading post...</span>
       }
 
       return (
         <div> 
-               <NavLink to={"/edit/" + this.props.match.params.id}>edit post </NavLink>
-               <NavLink to={"/delete/" + this.props.match.params.id}>delete post </NavLink>
+               {this.props.isAdmin && <NavLink to={"/edit/" + this.props.match.params.id}>edit post </NavLink>}
+               {this.props.isAdmin && <NavLink to={"/delete/" + this.props.match.params.id}>delete post </NavLink>}
               <h1>{this.state.post.title}</h1>
               <p>{this.state.post.content}</p>
         </div>

@@ -5,7 +5,16 @@ const User = require('../models/User');
 
 router.post('/signup', 
   [
-    
+    body('username')
+    .isEmail()
+    .withMessage('Please enter a valid username.')
+    .custom((value, { req }) => {
+      return User.findOne({ username: value }).then(userDoc => {
+        if (userDoc) {
+          return Promise.reject('Username already exists!');
+        }
+      })
+    }),
     body('password')
       .trim()
       .isLength({ min: 5 })
